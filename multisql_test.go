@@ -12,7 +12,15 @@ const (
 
 func TestNewDBObject(t *testing.T) {
 	t.Run("Postgres DB test", func(t *testing.T) {
-		db := NewDBObject(postgresFile, "postgres")
-		assert.NotNil(t, db)
+		ps := NewDBObject(postgresFile, "postgres")
+		assert.NotNil(t, ps)
 	})
 }
+
+// func TestInitDB(t *testing.T) {
+// 	t.Run("Postgres DB Init", func(t *testing.T) {
+// 		ps := NewDBObject(postgresFile, "postgres")
+// 		db := ps.InitDB()
+// 		assert.NotNil(t, db)
+// 	})
+// }
