@@ -9,8 +9,9 @@ import (
 )
 
 const (
-	driverNotSupported   = "Drivername not supported or nil"
-	psqlConnectionString = "host=%s port=%d user=%s password=%s dbname=%s sslmode=disable"
+	driverNotSupported    = "Drivername not supported or nil"
+	psqlConnectionString  = "host=%s port=%d user=%s password=%s dbname=%s sslmode=disable"
+	nosqlConnectionString = "mongodb://%s:%d"
 )
 
 //SQLConnectionInfo holds connection info for SQL implementations
@@ -23,6 +24,12 @@ type SQLConnectionInfo struct {
 	DBName   string `yaml:"dbname"`
 }
 
+//NoSQLConnectionInfo gold connection info for a NoSQL Implementation
+type NoSQLConnectionInfo struct {
+	URI  string `yaml:"uri"`
+	Port int    `yaml:"port"`
+}
+
 // NewConfig loads the info from the config file
 func NewConfig(driverName string, file string) (string, error) {
 	switch driverName {
@@ -33,6 +40,13 @@ func NewConfig(driverName string, file string) (string, error) {
 		}
 		psql := fmt.Sprintf(psqlConnectionString, cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.Name)
 		return psql, nil
+	case "mongodb":
+		cfg := &NoSQLConnectionInfo{}
+		if err := load(cfg, file); err != nil {
+			return "", err
+		}
+		nosql := fmt.Sprintf(nosqlConnectionString, cfg.URI, cfg.Port)
+		return nosql, nil
 	default:
 		err := errors.New(driverNotSupported)
 		return "", err

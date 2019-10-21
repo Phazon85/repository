@@ -17,6 +17,10 @@ func TestNewConfig(t *testing.T) {
 		}
 	})
 
+	t.Run("MongoDB config", func(t *testing.T) {
+		
+	})
+
 	t.Run("Nil driveName", func(t *testing.T) {
 		_, err := NewConfig("", "")
 		if err == nil {
