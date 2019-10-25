@@ -24,10 +24,12 @@ type SQLConnectionInfo struct {
 	DBName   string `yaml:"dbname"`
 }
 
-//NoSQLConnectionInfo gold connection info for a NoSQL Implementation
+//NoSQLConnectionInfo holds connection info for a NoSQL Implementation
 type NoSQLConnectionInfo struct {
-	URI  string `yaml:"uri"`
-	Port int    `yaml:"port"`
+	URI        string `yaml:"uri"`
+	Port       int    `yaml:"port"`
+	DBName     string `yaml:"dbname"`
+	Collection string `yaml:"collection"`
 }
 
 // NewConfig loads the info from the config file
@@ -38,7 +40,7 @@ func NewConfig(driverName string, file string) (string, error) {
 		if err := load(cfg, file); err != nil {
 			return "", err
 		}
-		psql := fmt.Sprintf(psqlConnectionString, cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.Name)
+		psql := fmt.Sprintf(psqlConnectionString, cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.DBName)
 		return psql, nil
 	case "mongodb":
 		cfg := &NoSQLConnectionInfo{}
