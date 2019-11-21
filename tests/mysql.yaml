@@ -1,6 +1,6 @@
 host: "localhost"
-port: 5432
-user: "postgres"
+port: 3306
+user: "mysql"
 password: "changeme"
-drivername: "postgres"
+drivername: "mysql"
 dbname: "test"

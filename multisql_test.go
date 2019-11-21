@@ -8,19 +8,17 @@ import (
 
 const (
 	postgresFile = "tests/postgres.yaml"
-	mongoFile    = "tests/mongo.yaml"
+	mysqlFile    = "tests/mysql.yaml"
 )
 
-func TestNewSQLDBObject(t *testing.T) {
+func TestNewSQL(t *testing.T) {
 	t.Run("Postgres DB test", func(t *testing.T) {
-		ps := NewSQLDBObject(postgresFile, "postgres")
+		ps := NewSQL(postgresFile)
 		assert.NotNil(t, ps)
 	})
-}
 
-func TestNewNoSQLDBObject(t *testing.T) {
-	t.Run("Mongo DB test", func(t *testing.T) {
-		mongo := NewNoSQLDBObject(mongoFile, "mongodb")
-		assert.NotNil(t, mongo)
+	t.Run("MySQL DB test", func(t *testing.T) {
+		mysql := NewSQL(mysqlFile)
+		assert.NotNil(t, mysql)
 	})
 }

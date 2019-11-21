@@ -1,30 +1,36 @@
 package config
 
-import (
-	"testing"
-)
+import "testing"
 
 const (
-	postgresFile = "../tests/postgres.yaml"
+	postgresDriverName = "postgres"
+	postgresFile       = "../tests/postgres.yaml"
+	mysqlFile          = "../tests/mysql.yaml"
 )
 
 func TestNewConfig(t *testing.T) {
 	t.Run("Postgres config", func(t *testing.T) {
-		cfg, _ := NewConfig("postgres", postgresFile)
-		want := "host=localhost port=5432 user=postgres password=changeme dbname=test sslmode=disable"
-		if cfg != want {
-			t.Errorf("Error loading config, got: %s, want %s", cfg, want)
+		driver, cfg := NewConfig(postgresFile)
+		driverwant := "postgres"
+		cfgwant := "host=localhost port=5432 user=postgres password=changeme dbname=test sslmode=disable"
+		if cfg != cfgwant || driver != driverwant {
+			t.Errorf("Error loading config, got: %s %s, want %s %s", cfg, driver, cfgwant, driverwant)
 		}
 	})
 
-	t.Run("MongoDB config", func(t *testing.T) {
-		
+	t.Run("MySQL config", func(t *testing.T) {
+		driver, cfg := NewConfig(mysqlFile)
+		driverwant := "mysql"
+		cfgwant := "mysql:changeme@localhost/test"
+		if cfg != cfgwant || driver != driverwant {
+			t.Errorf("Error loading config, got: %s %s, want %s %s", cfg, driver, cfgwant, driverwant)
+		}
 	})
 
-	t.Run("Nil driveName", func(t *testing.T) {
-		_, err := NewConfig("", "")
-		if err == nil {
-			t.Errorf("Error handling nil driverName, wanted error, didn't get one")
+	t.Run("Nil file name", func(t *testing.T) {
+		_, cfg := NewConfig("")
+		if cfg != "" {
+			t.Errorf("Wanted to get an empty string, but didn't")
 		}
 	})
 }
